@@ -1,0 +1,132 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "pm",
+  "agent": {
+    "pm": {
+      "description": "项目经理(PM)，负责需求拆解、工作流编排、调度子Agent协同工作",
+      "mode": "primary",
+      "model": "glm5/glm5",
+      "temperature": 0.3,
+      "steps": 50,
+      "color": "#4A90D9",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "task": {
+          "*": "deny",
+          "analyst": "allow",
+          "architect": "allow",
+          "devops": "allow",
+          "qa": "allow"
+        },
+        "skill": {
+          "pm-orchestrator": "allow"
+        },
+        "todowrite": "allow"
+      }
+    },
+    "analyst": {
+      "description": "需求分析师，负责将用户需求转化为结构化的PRD产品需求文档",
+      "mode": "subagent",
+      "model": "glm5/glm5",
+      "temperature": 0.4,
+      "steps": 30,
+      "color": "#7B68EE",
+      "permission": {
+        "edit": "allow",
+        "bash": "ask",
+        "skill": {
+          "analyst-prd": "allow"
+        },
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "todowrite": "allow"
+      }
+    },
+    "architect": {
+      "description": "系统架构师，负责系统架构设计、模块划分、接口定义、数据模型设计以及存量代码解析",
+      "mode": "subagent",
+      "model": "glm5/glm5",
+      "temperature": 0.2,
+      "steps": 40,
+      "color": "#FF8C00",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "git *": "allow",
+          "dir *": "allow",
+          "ls *": "allow",
+          "cat *": "allow",
+          "find *": "allow",
+          "*": "ask"
+        },
+        "skill": {
+          "architect-design": "allow"
+        },
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "todowrite": "allow"
+      }
+    },
+    "devops": {
+      "description": "开发工程师，负责根据系统设计文档进行编码实现、配置管理，完成功能开发交付",
+      "mode": "subagent",
+      "model": "glm5/glm5",
+      "temperature": 0.1,
+      "steps": 60,
+      "color": "#32CD32",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "skill": {
+          "devops-coding": "allow"
+        },
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "todowrite": "allow"
+      }
+    },
+    "qa": {
+      "description": "质量工程师，负责代码审查、测试执行、需求覆盖度检查，产出质量验证报告",
+      "mode": "subagent",
+      "model": "glm5/glm5",
+      "temperature": 0.1,
+      "steps": 40,
+      "color": "#DC143C",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "npm test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "npm run build*": "allow",
+          "npx *": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow",
+          "dotnet test*": "allow",
+          "mvn test*": "allow",
+          "gradle test*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "*": "ask"
+        },
+        "skill": {
+          "qa-verify": "allow"
+        },
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "todowrite": "allow"
+      }
+    }
+  },
+  "permission": {
+    "skill": {
+      "*": "allow"
+    }
+  }
+}
